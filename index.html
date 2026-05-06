@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>PlanilhaDashFinan</title>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
   <style>
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
@@ -163,9 +164,26 @@
     .user-info { font-size: 12px; color: var(--gray); }
 
     /* =========================================
-       MAIN LAYOUT
+       MAIN LAYOUT — 3 COLUNAS
     ========================================= */
-    main { max-width: 1280px; margin: 0 auto; padding: 24px; }
+    main { max-width: 1780px; margin: 0 auto; padding: 24px; }
+    .dash-layout { display: grid; grid-template-columns: 270px 1fr 270px; gap: 20px; align-items: start; }
+    @media(max-width:1300px) { .dash-layout { grid-template-columns: 240px 1fr 240px; } }
+    @media(max-width:1060px) { .dash-layout { grid-template-columns: 1fr; } .side-panel { position: static !important; } }
+    .side-panel { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 18px 16px; position: sticky; top: 72px; }
+    .panel-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--yellow); text-align: center; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+    .chart-section { margin-bottom: 20px; }
+    .chart-label { font-size: 10px; color: var(--gray); text-transform: uppercase; letter-spacing: .7px; margin-bottom: 8px; text-align: center; }
+    .chart-summary { border-top: 1px solid var(--border); padding-top: 14px; margin-top: 6px; display: flex; flex-direction: column; gap: 10px; }
+    .cs-item { display: flex; justify-content: space-between; align-items: center; }
+    .cs-lbl { font-size: 11px; color: var(--gray); }
+    .cs-val { font-size: 12px; font-weight: 600; color: var(--text); max-width: 130px; text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .notes-panel { display: flex; flex-direction: column; gap: 12px; }
+    #notasArea { width: 100%; min-height: 340px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 12px; color: var(--gray-l); font-size: 13px; line-height: 1.6; resize: vertical; font-family: inherit; transition: border-color .2s; }
+    #notasArea:focus { outline: none; border-color: var(--yellow); }
+    #notasArea::placeholder { color: var(--gray-d); }
+    .notes-footer { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .notes-hint { font-size: 10px; color: var(--gray-d); }
 
     /* =========================================
        MONTH NAVIGATOR
@@ -412,6 +430,19 @@
   </header>
 
   <main>
+  <div class="dash-layout">
+    <aside class="side-panel chart-panel">
+      <div class="panel-title" id="chartTitle">Análise</div>
+      <div class="chart-section"><div class="chart-label">Receitas vs Despesas</div><canvas id="chartBar" height="150"></canvas></div>
+      <div class="chart-section"><div class="chart-label">Despesas por Categoria</div><canvas id="chartPie" height="170"></canvas></div>
+      <div class="chart-summary">
+        <div class="cs-item"><span class="cs-lbl">Maior Receita</span><span class="cs-val" id="csMaxRec" title="">—</span></div>
+        <div class="cs-item"><span class="cs-lbl">Maior Despesa</span><span class="cs-val" id="csMaxDes" title="">—</span></div>
+        <div class="cs-item"><span class="cs-lbl">Lançamentos</span><span class="cs-val" id="csTotal">0</span></div>
+        <div class="cs-item"><span class="cs-lbl">Categorias</span><span class="cs-val" id="csCats">0</span></div>
+      </div>
+    </aside>
+    <div class="dash-center">
     <!-- MONTH NAV -->
     <div class="month-nav">
       <button class="m-btn" onclick="changeMonth(-1)">‹</button>
@@ -508,6 +539,16 @@
         <button class="btn btn-outline btn-sm" onclick="addCat()">Adicionar</button>
       </div>
     </div>
+    </div><!-- /dash-center -->
+    <aside class="side-panel notes-panel">
+      <div class="panel-title" id="notasTitle">Anotações</div>
+      <textarea id="notasArea" placeholder="Escreva suas anotações para este mês..."></textarea>
+      <div class="notes-footer">
+        <span class="notes-hint" id="notesSaved"></span>
+        <button class="btn btn-outline btn-sm" onclick="salvarNotas()">Salvar</button>
+      </div>
+    </aside>
+  </div><!-- /dash-layout -->
   </main>
 </div>
 
@@ -710,6 +751,7 @@ async function iniciarApp() {
   atualizarMes();
   await carregarCategorias();
   await carregarDados();
+  if (typeof carregarNotas === 'function') carregarNotas();
 }
 
 // ─── AUTH ─────────────────────────────────────────────────
@@ -759,7 +801,10 @@ document.addEventListener('keydown', e => {
 
 // ─── MÊS ──────────────────────────────────────────────────
 function atualizarMes() {
-  g('monthLabel').textContent = `${MESES[mesAtual]} ${anoAtual}`;
+  const label = `${MESES[mesAtual]} ${anoAtual}`;
+  g('monthLabel').textContent = label;
+  if (g('chartTitle')) g('chartTitle').textContent = 'Análise — ' + label;
+  if (g('notasTitle')) g('notasTitle').textContent = 'Anotações de ' + MESES[mesAtual];
 }
 
 async function changeMonth(delta) {
@@ -768,6 +813,7 @@ async function changeMonth(delta) {
   if (mesAtual < 0)  { mesAtual = 11; anoAtual--; }
   atualizarMes();
   await carregarDados();
+  if (typeof carregarNotas === 'function') carregarNotas();
 }
 
 // ─── DADOS ────────────────────────────────────────────────
@@ -845,6 +891,7 @@ function atualizarCards() {
   });
   g('cAtraso').textContent    = atrasadas.length;
   g('cAtrasoHint').textContent = fmt(atrasadas.reduce((a,l) => a + +l.valor, 0));
+  if (typeof atualizarGraficos === 'function') atualizarGraficos();
 }
 
 // ─── TABELA ───────────────────────────────────────────────
@@ -1248,6 +1295,75 @@ document.querySelectorAll('.overlay').forEach(el => {
       el.classList.remove('open');
       if (el.id === 'mLanc') g('recRow').style.display = 'block';
     }
+  });
+});
+
+// ══════════════════════════════════════════════════════════
+// ─── GRÁFICOS ─────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════
+let chartBarInst = null;
+let chartPieInst = null;
+const PIE_COLORS = ['#FFD600','#f97316','#ef4444','#22c55e','#3b82f6','#a855f7','#ec4899','#14b8a6','#eab308','#6366f1'];
+
+function atualizarGraficos() {
+  if (typeof Chart === 'undefined') return;
+  const rec = lancamentos.filter(l => l.tipo === 'receita').reduce((s,l) => s + +l.valor, 0);
+  const des = lancamentos.filter(l => l.tipo === 'despesa').reduce((s,l) => s + +l.valor, 0);
+  const ctxBar = g('chartBar').getContext('2d');
+  if (chartBarInst) chartBarInst.destroy();
+  chartBarInst = new Chart(ctxBar, {
+    type: 'bar',
+    data: { labels: ['Receitas', 'Despesas'], datasets: [{ data: [rec, des], backgroundColor: ['rgba(34,197,94,.75)','rgba(239,68,68,.75)'], borderColor: ['#22c55e','#ef4444'], borderWidth: 1, borderRadius: 5 }] },
+    options: { responsive: true, plugins: { legend: { display: false } }, scales: { x: { grid: { color: '#2a2a2a' }, ticks: { color: '#888', font: { size: 10 } } }, y: { grid: { color: '#2a2a2a' }, ticks: { color: '#888', font: { size: 10 }, callback: v => 'R$' + (v >= 1000 ? (v/1000).toFixed(1)+'k' : v) } } } }
+  });
+  const ctxPie = g('chartPie').getContext('2d');
+  if (chartPieInst) chartPieInst.destroy();
+  const desPorCat = {};
+  lancamentos.filter(l => l.tipo === 'despesa').forEach(l => { const c = l.categoria || 'Sem categoria'; desPorCat[c] = (desPorCat[c] || 0) + +l.valor; });
+  const catL = Object.keys(desPorCat), catV = Object.values(desPorCat);
+  chartPieInst = new Chart(ctxPie, {
+    type: 'doughnut',
+    data: { labels: catL.length ? catL : ['Sem dados'], datasets: [{ data: catV.length ? catV : [1], backgroundColor: catL.length ? catL.map((_,i) => PIE_COLORS[i % PIE_COLORS.length]) : ['#2a2a2a'], borderColor: '#181818', borderWidth: 2 }] },
+    options: { responsive: true, cutout: '62%', plugins: { legend: { display: !!catL.length, position: 'bottom', labels: { color: '#888', font: { size: 9 }, boxWidth: 10, padding: 6 } }, tooltip: { callbacks: { label: ctx => ' ' + ctx.label + ': R$ ' + Number(ctx.raw).toLocaleString('pt-BR',{minimumFractionDigits:2}) } } } }
+  });
+  const recL = lancamentos.filter(l => l.tipo === 'receita');
+  const desL = lancamentos.filter(l => l.tipo === 'despesa');
+  const maxRec = recL.length ? recL.reduce((a,b) => +a.valor > +b.valor ? a : b) : null;
+  const maxDes = desL.length ? desL.reduce((a,b) => +a.valor > +b.valor ? a : b) : null;
+  g('csMaxRec').textContent = maxRec ? maxRec.descricao.substring(0,18) : '—';
+  g('csMaxRec').title = maxRec ? maxRec.descricao + ' — ' + fmt(maxRec.valor) : '';
+  g('csMaxDes').textContent = maxDes ? maxDes.descricao.substring(0,18) : '—';
+  g('csMaxDes').title = maxDes ? maxDes.descricao + ' — ' + fmt(maxDes.valor) : '';
+  g('csTotal').textContent = lancamentos.length;
+  g('csCats').textContent = catL.length;
+}
+
+// ══════════════════════════════════════════════════════════
+// ─── ANOTAÇÕES ────────────────────────────────────────────
+// ══════════════════════════════════════════════════════════
+let notasTimer = null;
+function notasKey() { return 'notas_' + (user ? user.id : 'anon') + '_' + anoAtual + '_' + String(mesAtual+1).padStart(2,'00'); }
+function carregarNotas() {
+  const txt = localStorage.getItem(notasKey()) || '';
+  g('notasArea').value = txt;
+  g('notesSaved').textContent = txt ? '✓ carregado' : '';
+}
+function salvarNotas() {
+  localStorage.setItem(notasKey(), g('notasArea').value);
+  const h = new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+  g('notesSaved').textContent = 'Salvo às ' + h;
+  toast('Anotações salvas!', 'success');
+}
+document.addEventListener('DOMContentLoaded', () => {
+  const area = document.getElementById('notasArea');
+  if (!area) return;
+  area.addEventListener('input', () => {
+    clearTimeout(notasTimer);
+    g('notesSaved').textContent = 'Digitando...';
+    notasTimer = setTimeout(() => {
+      localStorage.setItem(notasKey(), area.value);
+      g('notesSaved').textContent = 'Salvo às ' + new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
+    }, 2000);
   });
 });
 
