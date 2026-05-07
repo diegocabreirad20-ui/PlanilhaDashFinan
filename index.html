@@ -166,23 +166,76 @@
     /* =========================================
        MAIN LAYOUT — 3 COLUNAS
     ========================================= */
-    main { max-width: 1780px; margin: 0 auto; padding: 24px; }
-    .dash-layout { display: grid; grid-template-columns: 270px 1fr 270px; gap: 20px; align-items: start; }
-    @media(max-width:1300px) { .dash-layout { grid-template-columns: 240px 1fr 240px; } }
-    @media(max-width:1060px) { .dash-layout { grid-template-columns: 1fr; } .side-panel { position: static !important; } }
-    .side-panel { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 18px 16px; position: sticky; top: 72px; }
-    .panel-title { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; color: var(--yellow); text-align: center; margin-bottom: 16px; padding-bottom: 12px; border-bottom: 1px solid var(--border); }
+    main { max-width: 2200px; margin: 0 auto; padding: 24px; }
+
+    .dash-layout {
+      display: grid;
+      grid-template-columns: 540px 1fr 405px;
+      gap: 20px;
+      align-items: start;
+    }
+    @media(max-width:1600px) {
+      .dash-layout { grid-template-columns: 400px 1fr 320px; }
+    }
+    @media(max-width:1300px) {
+      .dash-layout { grid-template-columns: 300px 1fr 260px; }
+    }
+    @media(max-width:1060px) {
+      .dash-layout { grid-template-columns: 1fr; }
+      .side-panel { position: static !important; }
+    }
+
+    /* ─── SIDE PANELS ─── */
+    .side-panel {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 18px 16px;
+      position: sticky;
+      top: 72px;
+    }
+    .panel-title {
+      font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 1px;
+      color: var(--yellow); text-align: center;
+      margin-bottom: 16px; padding-bottom: 12px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* ─── CHART PANEL ─── */
     .chart-section { margin-bottom: 20px; }
-    .chart-label { font-size: 10px; color: var(--gray); text-transform: uppercase; letter-spacing: .7px; margin-bottom: 8px; text-align: center; }
-    .chart-summary { border-top: 1px solid var(--border); padding-top: 14px; margin-top: 6px; display: flex; flex-direction: column; gap: 10px; }
+    .chart-label {
+      font-size: 10px; color: var(--gray);
+      text-transform: uppercase; letter-spacing: .7px;
+      margin-bottom: 8px; text-align: center;
+    }
+    .chart-summary {
+      border-top: 1px solid var(--border);
+      padding-top: 14px; margin-top: 6px;
+      display: flex; flex-direction: column; gap: 10px;
+    }
     .cs-item { display: flex; justify-content: space-between; align-items: center; }
     .cs-lbl { font-size: 11px; color: var(--gray); }
     .cs-val { font-size: 12px; font-weight: 600; color: var(--text); max-width: 130px; text-align: right; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    /* ─── NOTES PANEL ─── */
     .notes-panel { display: flex; flex-direction: column; gap: 12px; }
-    #notasArea { width: 100%; min-height: 340px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; padding: 12px; color: var(--gray-l); font-size: 13px; line-height: 1.6; resize: vertical; font-family: inherit; transition: border-color .2s; }
+    #notasArea {
+      width: 100%; flex: 1;
+      min-height: 340px;
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 8px; padding: 12px;
+      color: var(--gray-l); font-size: 13px;
+      line-height: 1.6; resize: vertical;
+      font-family: inherit;
+      transition: border-color .2s;
+    }
     #notasArea:focus { outline: none; border-color: var(--yellow); }
     #notasArea::placeholder { color: var(--gray-d); }
-    .notes-footer { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+    .notes-footer {
+      display: flex; align-items: center;
+      justify-content: space-between; gap: 8px;
+    }
     .notes-hint { font-size: 10px; color: var(--gray-d); }
 
     /* =========================================
@@ -387,6 +440,51 @@
     ::-webkit-scrollbar-track { background: var(--bg); }
     ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
     ::-webkit-scrollbar-thumb:hover { background: var(--gray-d); }
+
+    /* ─── STAT CARD CLICKABLE ─── */
+    .stat-card-click { cursor: pointer; transition: border-color .18s, transform .12s; }
+    .stat-card-click:hover { border-color: var(--yellow); transform: translateY(-2px); }
+
+    /* ─── DETAIL / REPORT TABLE ─── */
+    .detail-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+    .detail-table th {
+      background: var(--bg2); padding: 8px 10px; text-align: left;
+      color: var(--gray); font-size: 10px; text-transform: uppercase; letter-spacing: .7px;
+      border-bottom: 1px solid var(--border);
+    }
+    .detail-table td { padding: 8px 10px; border-bottom: 1px solid var(--border); }
+    .detail-table tr:last-child td { border-bottom: none; }
+    .detail-table tbody tr:hover td { background: rgba(255,214,0,.02); }
+
+    /* ─── NOTES HISTORY ─── */
+    .notes-list { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+    .note-card {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 8px; padding: 10px 12px; cursor: pointer;
+      transition: border-color .15s;
+    }
+    .note-card:hover { border-color: var(--yellow); }
+    .note-card-ts { font-size: 10px; color: var(--gray-d); margin-bottom: 4px; }
+    .note-card-preview {
+      font-size: 12px; color: var(--gray-l); line-height: 1.4;
+      overflow: hidden; display: -webkit-box;
+      -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+    }
+    .no-notes { font-size: 11px; color: var(--gray-d); text-align: center; padding: 8px 0; }
+
+    /* ─── MODAL EXTRA LARGE ─── */
+    .modal-xl { width: 860px; }
+
+    /* ─── REPORT ─── */
+    .report-filters { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 16px; }
+    .report-total {
+      display: flex; justify-content: space-between; align-items: center;
+      background: var(--bg); border: 1px solid var(--border); border-radius: 8px;
+      padding: 12px 14px; margin-bottom: 12px; flex-wrap: wrap; gap: 10px;
+    }
+    .report-total span { font-size: 12px; color: var(--gray); }
+    .report-total strong { font-size: 13px; }
+    .report-result { max-height: 50vh; overflow-y: auto; }
   </style>
 </head>
 <body>
@@ -431,18 +529,44 @@
 
   <main>
   <div class="dash-layout">
+
+    <!-- ══════════════ PAINEL ESQUERDO: GRÁFICOS ══════════════ -->
     <aside class="side-panel chart-panel">
       <div class="panel-title" id="chartTitle">Análise</div>
-      <div class="chart-section"><div class="chart-label">Receitas vs Despesas</div><canvas id="chartBar" height="150"></canvas></div>
-      <div class="chart-section"><div class="chart-label">Despesas por Categoria</div><canvas id="chartPie" height="170"></canvas></div>
+
+      <div class="chart-section">
+        <div class="chart-label">Receitas vs Despesas</div>
+        <canvas id="chartBar" height="220"></canvas>
+      </div>
+
+      <div class="chart-section">
+        <div class="chart-label">Despesas por Categoria</div>
+        <canvas id="chartPie" height="250"></canvas>
+      </div>
+
       <div class="chart-summary">
-        <div class="cs-item"><span class="cs-lbl">Maior Receita</span><span class="cs-val" id="csMaxRec" title="">—</span></div>
-        <div class="cs-item"><span class="cs-lbl">Maior Despesa</span><span class="cs-val" id="csMaxDes" title="">—</span></div>
-        <div class="cs-item"><span class="cs-lbl">Lançamentos</span><span class="cs-val" id="csTotal">0</span></div>
-        <div class="cs-item"><span class="cs-lbl">Categorias</span><span class="cs-val" id="csCats">0</span></div>
+        <div class="cs-item">
+          <span class="cs-lbl">Maior Receita</span>
+          <span class="cs-val" id="csMaxRec">—</span>
+        </div>
+        <div class="cs-item">
+          <span class="cs-lbl">Maior Despesa</span>
+          <span class="cs-val" id="csMaxDes">—</span>
+        </div>
+        <div class="cs-item">
+          <span class="cs-lbl">Lançamentos</span>
+          <span class="cs-val" id="csTotal">0</span>
+        </div>
+        <div class="cs-item">
+          <span class="cs-lbl">Categorias</span>
+          <span class="cs-val" id="csCats">0</span>
+        </div>
       </div>
     </aside>
+
+    <!-- ══════════════ CENTRO: CONTEÚDO PRINCIPAL ══════════════ -->
     <div class="dash-center">
+
     <!-- MONTH NAV -->
     <div class="month-nav">
       <button class="m-btn" onclick="changeMonth(-1)">‹</button>
@@ -452,24 +576,24 @@
 
     <!-- CARDS -->
     <div class="cards-grid">
-      <div class="stat-card">
+      <div class="stat-card stat-card-click" onclick="verDetalhesCard('saldo')" title="Clique para ver todos os lançamentos">
         <div class="lbl">Saldo do Mês</div>
         <div class="val" id="cSaldo" style="color:var(--yellow)">R$ 0,00</div>
       </div>
-      <div class="stat-card">
+      <div class="stat-card stat-card-click" onclick="verDetalhesCard('receitas')" title="Clique para ver receitas">
         <div class="lbl">Receitas</div>
         <div class="val" id="cReceitas" style="color:var(--green)">R$ 0,00</div>
       </div>
-      <div class="stat-card">
+      <div class="stat-card stat-card-click" onclick="verDetalhesCard('despesas')" title="Clique para ver despesas">
         <div class="lbl">Despesas</div>
         <div class="val" id="cDespesas" style="color:var(--red)">R$ 0,00</div>
       </div>
-      <div class="stat-card">
+      <div class="stat-card stat-card-click" onclick="verDetalhesCard('vencer')" title="Clique para ver lançamentos a vencer">
         <div class="lbl">A Vencer — 7 dias</div>
         <div class="val" id="cVencer" style="color:var(--orange)">0</div>
         <div class="hint" id="cVencerHint">R$ 0,00</div>
       </div>
-      <div class="stat-card">
+      <div class="stat-card stat-card-click" onclick="verDetalhesCard('atrasadas')" title="Clique para ver despesas atrasadas">
         <div class="lbl">Atrasadas</div>
         <div class="val" id="cAtraso" style="color:var(--red)">0</div>
         <div class="hint" id="cAtrasoHint">R$ 0,00</div>
@@ -479,7 +603,10 @@
     <!-- LANÇAMENTOS -->
     <div class="sec-head">
       <span class="sec-title">Lançamentos do Mês</span>
-      <button class="btn btn-outline" onclick="abrirNovo()">＋ Novo Lançamento</button>
+      <div style="display:flex;gap:8px;align-items:center">
+        <button class="btn btn-ghost btn-sm" onclick="abrirRelatorio()" title="Gerar relatório por período">📊 Relatório</button>
+        <button class="btn btn-outline" onclick="abrirNovo()">＋ Novo Lançamento</button>
+      </div>
     </div>
     <div class="table-wrap">
       <div class="filter-bar">
@@ -539,15 +666,21 @@
         <button class="btn btn-outline btn-sm" onclick="addCat()">Adicionar</button>
       </div>
     </div>
+
     </div><!-- /dash-center -->
+
+    <!-- ══════════════ PAINEL DIREITO: ANOTAÇÕES ══════════════ -->
     <aside class="side-panel notes-panel">
       <div class="panel-title" id="notasTitle">Anotações</div>
-      <textarea id="notasArea" placeholder="Escreva suas anotações para este mês..."></textarea>
+      <textarea id="notasArea" placeholder="Nova anotação para este mês..."></textarea>
       <div class="notes-footer">
         <span class="notes-hint" id="notesSaved"></span>
-        <button class="btn btn-outline btn-sm" onclick="salvarNotas()">Salvar</button>
+        <button class="btn btn-outline btn-sm" onclick="salvarNotas()">💾 Salvar</button>
       </div>
+      <!-- Histórico de anotações salvas -->
+      <div class="notes-list" id="notasList"></div>
     </aside>
+
   </div><!-- /dash-layout -->
   </main>
 </div>
@@ -692,6 +825,82 @@
   </div>
 </div>
 
+<!-- ========== MODAL: DETALHES (cards / gráfico) ========== -->
+<div class="overlay" id="mDetails">
+  <div class="modal modal-xl">
+    <div class="mhead">
+      <h3 id="mDetailsTitle">Detalhes</h3>
+      <button class="mclose" onclick="fecharModal('mDetails')">×</button>
+    </div>
+    <div class="mbody" style="padding:0">
+      <div id="mDetailsBody" style="max-height:65vh;overflow-y:auto"></div>
+    </div>
+    <div class="mfoot">
+      <span id="mDetailsTotal" style="font-size:13px;color:var(--gray);flex:1"></span>
+      <button class="btn btn-ghost" onclick="fecharModal('mDetails')">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== MODAL: RELATÓRIO ========== -->
+<div class="overlay" id="mRelatorio">
+  <div class="modal modal-xl">
+    <div class="mhead">
+      <h3>📊 Relatório por Período e Categoria</h3>
+      <button class="mclose" onclick="fecharModal('mRelatorio')">×</button>
+    </div>
+    <div class="mbody">
+      <div class="report-filters">
+        <div class="fg" style="margin-bottom:0">
+          <label>Data Início</label>
+          <input type="date" id="rDataIni" />
+        </div>
+        <div class="fg" style="margin-bottom:0">
+          <label>Data Fim</label>
+          <input type="date" id="rDataFim" />
+        </div>
+        <div class="fg" style="margin-bottom:0">
+          <label>Tipo</label>
+          <select id="rTipo">
+            <option value="">Todos</option>
+            <option value="receita">Receitas</option>
+            <option value="despesa">Despesas</option>
+          </select>
+        </div>
+        <div class="fg" style="margin-bottom:0">
+          <label>Categoria</label>
+          <select id="rCat"><option value="">Todas</option></select>
+        </div>
+      </div>
+      <button class="btn btn-primary" onclick="gerarRelatorio()" style="width:100%;margin-bottom:16px">🔍 Gerar Relatório</button>
+      <div class="report-result" id="reportResult"></div>
+    </div>
+    <div class="mfoot">
+      <button class="btn btn-ghost" onclick="fecharModal('mRelatorio')">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ========== MODAL: VER NOTA ========== -->
+<div class="overlay" id="mNota">
+  <div class="modal" style="width:600px">
+    <div class="mhead">
+      <h3 id="mNotaTitle">Anotação</h3>
+      <button class="mclose" onclick="fecharModal('mNota')">×</button>
+    </div>
+    <div class="mbody">
+      <div id="mNotaBody"
+           style="white-space:pre-wrap;color:var(--gray-l);font-size:13px;line-height:1.7;
+                  background:var(--bg);border:1px solid var(--border);border-radius:8px;
+                  padding:16px;max-height:55vh;overflow-y:auto"></div>
+    </div>
+    <div class="mfoot">
+      <button class="btn btn-danger btn-sm" id="mNotaDelBtn">🗑 Excluir</button>
+      <button class="btn btn-ghost" onclick="fecharModal('mNota')">Fechar</button>
+    </div>
+  </div>
+</div>
+
 <!-- TOAST -->
 <div id="toast"></div>
 
@@ -751,7 +960,7 @@ async function iniciarApp() {
   atualizarMes();
   await carregarCategorias();
   await carregarDados();
-  if (typeof carregarNotas === 'function') carregarNotas();
+  carregarNotas();
 }
 
 // ─── AUTH ─────────────────────────────────────────────────
@@ -803,17 +1012,17 @@ document.addEventListener('keydown', e => {
 function atualizarMes() {
   const label = `${MESES[mesAtual]} ${anoAtual}`;
   g('monthLabel').textContent = label;
-  if (g('chartTitle')) g('chartTitle').textContent = 'Análise — ' + label;
-  if (g('notasTitle')) g('notasTitle').textContent = 'Anotações de ' + MESES[mesAtual];
+  g('chartTitle').textContent = `Análise — ${label}`;
+  g('notasTitle').textContent = `Anotações de ${MESES[mesAtual]}`;
 }
 
-async function changeMonth(delta) {
+apync function changeMonth(delta) {
   mesAtual += delta;
   if (mesAtual > 11) { mesAtual = 0; anoAtual++; }
   if (mesAtual < 0)  { mesAtual = 11; anoAtual--; }
   atualizarMes();
   await carregarDados();
-  if (typeof carregarNotas === 'function') carregarNotas();
+  carregarNotas();
 }
 
 // ─── DADOS ────────────────────────────────────────────────
@@ -858,12 +1067,13 @@ async function carregarCategorias() {
 }
 
 // ─── CARDS ────────────────────────────────────────────────
+let _cardData = {};
+
 function atualizarCards() {
-  let rec = 0, des = 0;
-  for (const l of lancamentos) {
-    if (l.tipo === 'receita') rec += +l.valor;
-    else des += +l.valor;
-  }
+  const recLancs = lancamentos.filter(l => l.tipo === 'receita');
+  const desLancs = lancamentos.filter(l => l.tipo === 'despesa');
+  const rec = recLancs.reduce((s,l) => s + +l.valor, 0);
+  const des = desLancs.reduce((s,l) => s + +l.valor, 0);
   const saldo = rec - des;
 
   g('cSaldo').textContent   = fmt(saldo);
@@ -891,7 +1101,62 @@ function atualizarCards() {
   });
   g('cAtraso').textContent    = atrasadas.length;
   g('cAtrasoHint').textContent = fmt(atrasadas.reduce((a,l) => a + +l.valor, 0));
-  if (typeof atualizarGraficos === 'function') atualizarGraficos();
+
+  // Armazenar para modal de detalhes
+  _cardData = {
+    saldo:     lancamentos,
+    receitas:  recLancs,
+    despesas:  desLancs,
+    vencer:    aVencer,
+    atrasadas: atrasadas
+  };
+
+  atualizarGraficos();
+}
+
+// ─── DETALHES CARD ────────────────────────────────────────
+function verDetalhesCard(tipo) {
+  const map = {
+    saldo:     'Todos os Lançamentos do Mês',
+    receitas:  'Receitas do Mês',
+    despesas:  'Despesas do Mês',
+    vencer:    'A Vencer — Próximos 7 dias',
+    atrasadas: 'Despesas Atrasadas'
+  };
+  mostrarDetalhes(map[tipo] || 'Detalhes', _cardData[tipo] || []);
+}
+
+function mostrarDetalhes(titulo, items) {
+  g('mDetailsTitle').textContent = titulo;
+  if (!items || items.length === 0) {
+    g('mDetailsBody').innerHTML = '<p style="color:var(--gray);text-align:center;padding:32px">Nenhum registro encontrado.</p>';
+    g('mDetailsTotal').textContent = '';
+  } else {
+    const totalRec = items.filter(l => l.tipo === 'receita').reduce((s,l) => s + +l.valor, 0);
+    const totalDes = items.filter(l => l.tipo === 'despesa').reduce((s,l) => s + +l.valor, 0);
+    const temMistos = items.some(l => l.tipo === 'receita') && items.some(l => l.tipo === 'despesa');
+    const totalStr = temMistos
+      ? `Receitas: ${fmt(totalRec)} | Despesas: ${fmt(totalDes)} | ${items.length} lançamentos`
+      : `Total: ${fmt(totalRec + totalDes)} (${items.length} lançamentos)`;
+    g('mDetailsTotal').textContent = totalStr;
+    g('mDetailsBody').innerHTML = `
+      <table class="detail-table">
+        <thead><tr>
+          <th>Data</th><th>Descrição</th><th>Categoria</th>
+          <th>Tipo</th><th>Forma Pag.</th><th>Status</th><th>Valor</th>
+        </tr></thead>
+        <tbody>${items.map(l => `<tr>
+          <td>${fmtData(l.data)}</td>
+          <td>${esc(l.descricao)}</td>
+          <td style="color:var(--gray)">${esc(l.categoria || '—')}</td>
+          <td><span class="badge b-${l.tipo}">${l.tipo}</span></td>
+          <td style="font-size:11px;color:var(--gray)">${esc(l.forma_pagamento || '—')}</td>
+          <td><span class="badge b-${l.status}">${l.status}</span></td>
+          <td class="${l.tipo==='receita'?'v-rec':'v-des'}">${l.tipo==='receita'?'+':'−'} ${fmt(l.valor)}</td>
+        </tr>`).join('')}</tbody>
+      </table>`;
+  }
+  abrirModal('mDetails');
 }
 
 // ─── TABELA ───────────────────────────────────────────────
@@ -931,444 +1196,4 @@ function renderTabela() {
       <td>${fmtData(l.data)}</td>
       <td>${esc(l.descricao)}</td>
       <td style="color:var(--gray)">${esc(l.categoria || '—')}</td>
-      <td><span class="badge b-${l.tipo}">${l.tipo}</span></td>
-      <td style="font-size:12px;color:var(--gray)">${esc(l.forma_pagamento || '—')}</td>
-      <td><span class="badge b-${l.status}">${l.status}</span></td>
-      <td class="${vCls}">${sinal} ${fmt(l.valor)}</td>
-      <td style="text-align:center;white-space:nowrap">
-        <button class="btn-icon" title="Editar" onclick="abrirEditar('${esc(l.id)}')">✏️</button>
-        <button class="btn-icon" title="Excluir" onclick="abrirDel('${esc(l.id)}','${esc(l.grupo_id||'')}')">🗑️</button>
-        ${btnG}
-      </td>
-    </tr>`;
-  }).join('');
-}
-
-// ─── CATEGORIAS ───────────────────────────────────────────
-function renderCats() {
-  g('catChips').innerHTML = categorias.map(c =>
-    `<span class="cat-chip">${esc(c.nome)}
-      <button class="rm" title="Remover" onclick="removerCat('${esc(c.id)}','${esc(c.nome)}')">×</button>
-    </span>`
-  ).join('');
-}
-
-function popularSelectCat() {
-  const opts = '<option value="">Sem categoria</option>'
-    + categorias.map(c => `<option value="${esc(c.nome)}">${esc(c.nome)}</option>`).join('');
-  g('eCat').innerHTML  = opts;
-
-  const fOpts = '<option value="">Todas as categorias</option>'
-    + categorias.map(c => `<option value="${esc(c.nome)}">${esc(c.nome)}</option>`).join('');
-  g('fCat').innerHTML = fOpts;
-}
-
-async function addCat() {
-  const inp  = g('novaCat');
-  const nome = inp.value.trim();
-  if (!nome) return;
-  if (categorias.find(c => c.nome.toLowerCase() === nome.toLowerCase())) {
-    toast('Categoria já existe.', 'error'); return;
-  }
-  const { data, error } = await sb
-    .from('categorias').insert({ user_id: user.id, nome }).select().single();
-  if (error) { toast('Erro: ' + error.message, 'error'); return; }
-  categorias.push(data);
-  categorias.sort((a,b) => a.nome.localeCompare(b.nome));
-  inp.value = '';
-  renderCats();
-  popularSelectCat();
-  toast('Categoria adicionada!', 'success');
-}
-
-async function removerCat(id, nome) {
-  if (!confirm(`Remover a categoria "${nome}"?`)) return;
-  const { error } = await sb.from('categorias').delete().eq('id', id);
-  if (error) { toast('Erro: ' + error.message, 'error'); return; }
-  categorias = categorias.filter(c => c.id !== id);
-  renderCats();
-  popularSelectCat();
-  toast('Categoria removida.', 'success');
-}
-
-// ─── MODAL LANÇAMENTO ─────────────────────────────────────
-function abrirNovo() {
-  g('editId').value = '';
-  g('mLancTitle').textContent = 'Novo Lançamento';
-  g('eDesc').value  = '';
-  g('eValor').value = '';
-  g('eStatus').value = 'pendente';
-  g('eForma').value  = '';
-  g('eRec').value    = 'unico';
-  g('recRow').style.display = 'block';
-  g('lancErr').innerHTML    = '';
-  popularSelectCat();
-  g('eCat').value = '';
-  // data padrão: hoje no mês selecionado
-  const hoje = new Date();
-  const dd = hoje.getFullYear() === anoAtual && hoje.getMonth() === mesAtual
-    ? String(hoje.getDate()).padStart(2,'0')
-    : '01';
-  g('eData').value = `${anoAtual}-${String(mesAtual+1).padStart(2,'0')}-${dd}`;
-  setTipo('despesa');
-  abrirModal('mLanc');
-}
-
-function abrirEditar(id) {
-  const l = lancamentos.find(x => x.id === id);
-  if (!l) return;
-  g('editId').value = id;
-  g('mLancTitle').textContent = 'Editar Lançamento';
-  setTipo(l.tipo);
-  g('eDesc').value   = l.descricao;
-  g('eValor').value  = l.valor;
-  g('eData').value   = l.data;
-  g('eStatus').value = l.status;
-  g('eForma').value  = l.forma_pagamento || '';
-  // recorrência desabilitada na edição
-  g('eRec').value    = 'unico';
-  g('recRow').style.display = 'none';
-  g('lancErr').innerHTML = '';
-  popularSelectCat();
-  g('eCat').value = l.categoria || '';
-  abrirModal('mLanc');
-}
-
-function setTipo(t) {
-  tipoAtual = t;
-  g('tBtnRec').className = 'tipo-btn' + (t === 'receita' ? ' t-rec' : '');
-  g('tBtnDes').className = 'tipo-btn' + (t === 'despesa' ? ' t-des' : '');
-}
-
-async function salvarLanc() {
-  const id       = g('editId').value;
-  const descricao = g('eDesc').value.trim();
-  const valor    = parseFloat(g('eValor').value);
-  const data     = g('eData').value;
-  const status   = g('eStatus').value;
-  const categoria = g('eCat').value;
-  const forma_pagamento = g('eForma').value;
-  const recorrencia = g('eRec').value;
-  const errEl = g('lancErr');
-  errEl.innerHTML = '';
-
-  if (!descricao) { errEl.innerHTML = '<div class="alert alert-error">Descrição obrigatória.</div>'; return; }
-  if (!valor || valor <= 0) { errEl.innerHTML = '<div class="alert alert-error">Informe um valor válido.</div>'; return; }
-  if (!data) { errEl.innerHTML = '<div class="alert alert-error">Data obrigatória.</div>'; return; }
-
-  const btn = g('saveBtn');
-  btn.innerHTML = '<span class="spinner"></span>';
-  btn.disabled = true;
-
-  const base = { user_id: user.id, descricao, valor, data, tipo: tipoAtual, status, categoria, forma_pagamento };
-
-  let error;
-  if (id) {
-    // EDIÇÃO
-    ({ error } = await sb.from('lancamentos').update(base).eq('id', id));
-    if (!error) toast('Lançamento atualizado!', 'success');
-  } else if (recorrencia === 'fixo') {
-    // FIXO MENSAL — 12 meses
-    const grupoId = crypto.randomUUID();
-    const entradas = [];
-    const dataBase = new Date(data + 'T00:00:00');
-    for (let i = 0; i < 12; i++) {
-      const d = new Date(dataBase);
-      d.setMonth(d.getMonth() + i);
-      entradas.push({
-        ...base,
-        data: d.toISOString().slice(0,10),
-        grupo_id: grupoId,
-        status: i === 0 ? status : 'pendente'
-      });
-    }
-    ({ error } = await sb.from('lancamentos').insert(entradas));
-    if (!error) toast('12 lançamentos criados (fixo mensal)!', 'success');
-  } else {
-    // ÚNICO
-    ({ error } = await sb.from('lancamentos').insert(base));
-    if (!error) toast('Lançamento adicionado!', 'success');
-  }
-
-  btn.innerHTML = 'Salvar';
-  btn.disabled = false;
-
-  if (error) {
-    errEl.innerHTML = `<div class="alert alert-error">${error.message}</div>`;
-    return;
-  }
-
-  g('recRow').style.display = 'block';
-  fecharModal('mLanc');
-  await carregarDados();
-}
-
-// ─── MODAL EXCLUIR ────────────────────────────────────────
-function abrirDel(id, grupoId) {
-  delId = id;
-  delGrupoId = grupoId || null;
-  g('delGrpChk').checked = false;
-  g('delGrpOpt').style.display = grupoId ? 'block' : 'none';
-  abrirModal('mDel');
-}
-
-async function confirmarDel() {
-  const btn = g('btnConfirmDel');
-  btn.innerHTML = '<span class="spinner"></span>';
-  btn.disabled = true;
-
-  const delGrupo = g('delGrpChk').checked;
-  let error;
-
-  if (delGrupo && delGrupoId) {
-    ({ error } = await sb.from('lancamentos').delete().eq('grupo_id', delGrupoId));
-  } else {
-    ({ error } = await sb.from('lancamentos').delete().eq('id', delId));
-  }
-
-  btn.innerHTML = 'Excluir';
-  btn.disabled = false;
-
-  if (error) { toast('Erro: ' + error.message, 'error'); return; }
-  toast('Excluído com sucesso.', 'success');
-  fecharModal('mDel');
-  await carregarDados();
-}
-
-// ─── MODAL GRUPO ──────────────────────────────────────────
-async function abrirGrupo(grupoId) {
-  const { data, error } = await sb
-    .from('lancamentos')
-    .select('*')
-    .eq('grupo_id', grupoId)
-    .order('data', { ascending: true });
-
-  if (error) { toast('Erro: ' + error.message, 'error'); return; }
-
-  g('mGrupoBody').innerHTML = data.length === 0
-    ? '<p style="color:var(--gray)">Nenhum lançamento encontrado neste grupo.</p>'
-    : data.map(l => `
-      <div class="g-item">
-        <div class="g-item-head">
-          <span>${fmtData(l.data)} — ${esc(l.descricao)}</span>
-          <span class="badge b-${l.status}">${l.status}</span>
-        </div>
-        <div class="form-row">
-          <div class="fg" style="margin-bottom:8px">
-            <label>Valor</label>
-            <input type="number" id="gv_${l.id}" value="${l.valor}" min="0.01" step="0.01" />
-          </div>
-          <div class="fg" style="margin-bottom:8px">
-            <label>Status</label>
-            <select id="gs_${l.id}">
-              <option value="pendente" ${l.status==='pendente'?'selected':''}>Pendente</option>
-              <option value="pago"     ${l.status==='pago'    ?'selected':''}>Pago</option>
-              <option value="atrasado" ${l.status==='atrasado'?'selected':''}>Atrasado</option>
-            </select>
-          </div>
-        </div>
-        <button class="btn btn-outline btn-sm" onclick="salvarItemGrupo('${esc(l.id)}')">💾 Salvar</button>
-      </div>`).join('');
-
-  abrirModal('mGrupo');
-}
-
-async function salvarItemGrupo(id) {
-  const valor  = parseFloat(g('gv_' + id).value);
-  const status = g('gs_' + id).value;
-  const { error } = await sb.from('lancamentos').update({ valor, status }).eq('id', id);
-  if (error) { toast('Erro: ' + error.message, 'error'); return; }
-  toast('Salvo!', 'success');
-  await carregarDados();
-}
-
-// ─── SQL SETUP ────────────────────────────────────────────
-const SQL = `-- ============================================================
---  PlanilhaDashFinan — SQL Setup para Supabase
---  Execute no SQL Editor > New query > Run
--- ============================================================
-
--- 1. Tabela de lançamentos
-CREATE TABLE IF NOT EXISTS lancamentos (
-  id              UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  user_id         UUID REFERENCES auth.users(id) ON DELETE CASCADE,
-  descricao       TEXT NOT NULL,
-  valor           NUMERIC(12,2) NOT NULL,
-  data            DATE NOT NULL,
-  tipo            TEXT NOT NULL CHECK (tipo IN ('receita','despesa')),
-  categoria       TEXT,
-  forma_pagamento TEXT,
-  status          TEXT DEFAULT 'pendente'
-                      CHECK (status IN ('pago','pendente','atrasado')),
-  grupo_id        TEXT,
-  created_at      TIMESTAMPTZ DEFAULT NOW()
-);
-
--- 2. Tabela de categorias
-CREATE TABLE IF NOT EXISTS categorias (
-  id         UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  user_id    UUID REFERENCES auth.users(id) ON DELETE CASCADE,
-  nome       TEXT NOT NULL,
-  created_at TIMESTAMPTZ DEFAULT NOW()
-);
-
--- 3. Índices para performance
-CREATE INDEX IF NOT EXISTS idx_lanc_user  ON lancamentos(user_id);
-CREATE INDEX IF NOT EXISTS idx_lanc_data  ON lancamentos(data);
-CREATE INDEX IF NOT EXISTS idx_lanc_grupo ON lancamentos(grupo_id);
-CREATE INDEX IF NOT EXISTS idx_cat_user   ON categorias(user_id);
-
--- 4. Row Level Security (RLS)
-ALTER TABLE lancamentos ENABLE ROW LEVEL SECURITY;
-ALTER TABLE categorias  ENABLE ROW LEVEL SECURITY;
-
--- Política: cada usuário vê e altera apenas seus dados
-DO $$
-BEGIN
-  IF NOT EXISTS (
-    SELECT 1 FROM pg_policies WHERE policyname = 'lanc_proprio' AND tablename = 'lancamentos'
-  ) THEN
-    CREATE POLICY lanc_proprio ON lancamentos FOR ALL USING (auth.uid() = user_id);
-  END IF;
-  IF NOT EXISTS (
-    SELECT 1 FROM pg_policies WHERE policyname = 'cat_proprio' AND tablename = 'categorias'
-  ) THEN
-    CREATE POLICY cat_proprio ON categorias FOR ALL USING (auth.uid() = user_id);
-  END IF;
-END $$;`;
-
-function openSql() {
-  g('sqlBox').textContent = SQL;
-  abrirModal('mSql');
-}
-function copiarSql() {
-  navigator.clipboard.writeText(SQL)
-    .then(() => toast('SQL copiado!', 'success'))
-    .catch(() => toast('Não foi possível copiar.', 'error'));
-}
-
-// ─── HELPERS ─────────────────────────────────────────────
-function g(id) { return document.getElementById(id); }
-function mostrar(id) { g(id).style.display = 'block'; }
-function esconder(id) { g(id).style.display = 'none'; }
-
-function abrirModal(id)  { g(id).classList.add('open'); }
-function fecharModal(id) {
-  g(id).classList.remove('open');
-  if (id === 'mLanc') g('recRow').style.display = 'block';
-}
-
-function fmt(v) {
-  return 'R$ ' + Number(v).toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-}
-function fmtData(d) {
-  if (!d) return '—';
-  const [y,m,dia] = d.split('-');
-  return `${dia}/${m}/${y}`;
-}
-function esc(s) {
-  if (s == null) return '';
-  return String(s)
-    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
-    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-let toastTimer;
-function toast(msg, tipo = 'info') {
-  const el = g('toast');
-  el.textContent = msg;
-  el.className = `show ${tipo}`;
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => { el.className = ''; }, 3200);
-}
-
-function toggleEye(fieldId, btn) {
-  const inp = g(fieldId);
-  if (inp.type === 'password') { inp.type = 'text'; btn.textContent = '🙈'; }
-  else { inp.type = 'password'; btn.textContent = '👁'; }
-}
-
-// Fechar modal clicando no overlay
-document.querySelectorAll('.overlay').forEach(el => {
-  el.addEventListener('click', e => {
-    if (e.target === el) {
-      el.classList.remove('open');
-      if (el.id === 'mLanc') g('recRow').style.display = 'block';
-    }
-  });
-});
-
-// ══════════════════════════════════════════════════════════
-// ─── GRÁFICOS ─────────────────────────────────────────────
-// ══════════════════════════════════════════════════════════
-let chartBarInst = null;
-let chartPieInst = null;
-const PIE_COLORS = ['#FFD600','#f97316','#ef4444','#22c55e','#3b82f6','#a855f7','#ec4899','#14b8a6','#eab308','#6366f1'];
-
-function atualizarGraficos() {
-  if (typeof Chart === 'undefined') return;
-  const rec = lancamentos.filter(l => l.tipo === 'receita').reduce((s,l) => s + +l.valor, 0);
-  const des = lancamentos.filter(l => l.tipo === 'despesa').reduce((s,l) => s + +l.valor, 0);
-  const ctxBar = g('chartBar').getContext('2d');
-  if (chartBarInst) chartBarInst.destroy();
-  chartBarInst = new Chart(ctxBar, {
-    type: 'bar',
-    data: { labels: ['Receitas', 'Despesas'], datasets: [{ data: [rec, des], backgroundColor: ['rgba(34,197,94,.75)','rgba(239,68,68,.75)'], borderColor: ['#22c55e','#ef4444'], borderWidth: 1, borderRadius: 5 }] },
-    options: { responsive: true, plugins: { legend: { display: false } }, scales: { x: { grid: { color: '#2a2a2a' }, ticks: { color: '#888', font: { size: 10 } } }, y: { grid: { color: '#2a2a2a' }, ticks: { color: '#888', font: { size: 10 }, callback: v => 'R$' + (v >= 1000 ? (v/1000).toFixed(1)+'k' : v) } } } }
-  });
-  const ctxPie = g('chartPie').getContext('2d');
-  if (chartPieInst) chartPieInst.destroy();
-  const desPorCat = {};
-  lancamentos.filter(l => l.tipo === 'despesa').forEach(l => { const c = l.categoria || 'Sem categoria'; desPorCat[c] = (desPorCat[c] || 0) + +l.valor; });
-  const catL = Object.keys(desPorCat), catV = Object.values(desPorCat);
-  chartPieInst = new Chart(ctxPie, {
-    type: 'doughnut',
-    data: { labels: catL.length ? catL : ['Sem dados'], datasets: [{ data: catV.length ? catV : [1], backgroundColor: catL.length ? catL.map((_,i) => PIE_COLORS[i % PIE_COLORS.length]) : ['#2a2a2a'], borderColor: '#181818', borderWidth: 2 }] },
-    options: { responsive: true, cutout: '62%', plugins: { legend: { display: !!catL.length, position: 'bottom', labels: { color: '#888', font: { size: 9 }, boxWidth: 10, padding: 6 } }, tooltip: { callbacks: { label: ctx => ' ' + ctx.label + ': R$ ' + Number(ctx.raw).toLocaleString('pt-BR',{minimumFractionDigits:2}) } } } }
-  });
-  const recL = lancamentos.filter(l => l.tipo === 'receita');
-  const desL = lancamentos.filter(l => l.tipo === 'despesa');
-  const maxRec = recL.length ? recL.reduce((a,b) => +a.valor > +b.valor ? a : b) : null;
-  const maxDes = desL.length ? desL.reduce((a,b) => +a.valor > +b.valor ? a : b) : null;
-  g('csMaxRec').textContent = maxRec ? maxRec.descricao.substring(0,18) : '—';
-  g('csMaxRec').title = maxRec ? maxRec.descricao + ' — ' + fmt(maxRec.valor) : '';
-  g('csMaxDes').textContent = maxDes ? maxDes.descricao.substring(0,18) : '—';
-  g('csMaxDes').title = maxDes ? maxDes.descricao + ' — ' + fmt(maxDes.valor) : '';
-  g('csTotal').textContent = lancamentos.length;
-  g('csCats').textContent = catL.length;
-}
-
-// ══════════════════════════════════════════════════════════
-// ─── ANOTAÇÕES ────────────────────────────────────────────
-// ══════════════════════════════════════════════════════════
-let notasTimer = null;
-function notasKey() { return 'notas_' + (user ? user.id : 'anon') + '_' + anoAtual + '_' + String(mesAtual+1).padStart(2,'00'); }
-function carregarNotas() {
-  const txt = localStorage.getItem(notasKey()) || '';
-  g('notasArea').value = txt;
-  g('notesSaved').textContent = txt ? '✓ carregado' : '';
-}
-function salvarNotas() {
-  localStorage.setItem(notasKey(), g('notasArea').value);
-  const h = new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
-  g('notesSaved').textContent = 'Salvo às ' + h;
-  toast('Anotações salvas!', 'success');
-}
-document.addEventListener('DOMContentLoaded', () => {
-  const area = document.getElementById('notasArea');
-  if (!area) return;
-  area.addEventListener('input', () => {
-    clearTimeout(notasTimer);
-    g('notesSaved').textContent = 'Digitando...';
-    notasTimer = setTimeout(() => {
-      localStorage.setItem(notasKey(), area.value);
-      g('notesSaved').textContent = 'Salvo às ' + new Date().toLocaleTimeString('pt-BR',{hour:'2-digit',minute:'2-digit'});
-    }, 2000);
-  });
-});
-
-// ─── ARRANQUE ─────────────────────────────────────────────
-init();
-</script>
-</body>
-</html>
+      <td><span class="badge b-${l.tipo}">${l.tipo
