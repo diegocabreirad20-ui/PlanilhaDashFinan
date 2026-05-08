@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>PlanilhaDashFinan</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+
+<div id="loadingOverlay">Carregando...</div>
+<div id="loginOverlay" style="display:none">
+  <input type="email" id="lEmail" placeholder="Email">
+  <input type="password" id="lPass" placeholder="Senha">
+  <button onclick="doLogin()">Entrar</button>
+</div>
+<div id="app" style="display:none">APP OK</div>
+
+<script>
+// CONFIG
+const SUPABASE_URL  = 'https://lkjrvzmgxgdhvkimhvwi.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...';
+
+const { createClient } = supabase;
+const sb = createClient(SUPABASE_URL, SUPABASE_ANON);
+
+let user = null;
+
+// INIT
+async function init() {
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+    if (session) {
+      user = session.user;
+      iniciarApp();
+    } else {
+      mostrarLogin();
+    }
+  } catch (e) {
+    console.error(e);
+    mostrarLogin();
+  }
+}
+
+function mostrarLogin() {
+  document.getElementById('loadingOverlay').style.display = 'none';
+  document.getElementById('loginOverlay').style.display = 'block';
+}
+
+function iniciarApp() {
+  document.getElementById('loadingOverlay').style.display = 'none';
+  document.getElementById('loginOverlay').style.display = 'none';
+  document.getElementById('app').style.display = 'block';
+}
+
+// LOGIN
+async function doLogin() {
+  const email = document.getElementById('lEmail').value;
+  const password = document.getElementById('lPass').value;
+
+  const { data, error } = await sb.auth.signInWithPassword({ email, password });
+
+  if (error) {
+    alert(error.message);
+    return;
+  }
+
+  user = data.user;
+  iniciarApp();
+}
+
+// FIX PRINCIPAL AQUI
+async function changeMonth(delta) {
+  console.log('mudou mês', delta);
+}
+
+// GARANTIR INICIALIZAÇÃO
+init();
+</script>
+
+</body>
+</html>
