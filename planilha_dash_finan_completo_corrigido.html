@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>PlanilhaDashFinan</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+</head>
+<body>
+
+<div id="loadingOverlay">Carregando...</div>
+<div id="loginOverlay" style="display:none">Login...</div>
+<div id="app" style="display:none">App carregado</div>
+
+<script>
+// CONFIG
+const SUPABASE_URL  = 'https://lkjrvzmgxgdhvkimhvwi.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImxranJ2em1neGdkaHZraW1odndpIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzgwOTE5NjIsImV4cCI6MjA5MzY2Nzk2Mn0.D_mdC_UAnukmOnyTFS5HuCTu78EqaahgGXR0RbQeRic';
+
+const { createClient } = supabase;
+const sb = createClient(SUPABASE_URL, SUPABASE_ANON);
+
+let user = null;
+let mesAtual = new Date().getMonth();
+let anoAtual = new Date().getFullYear();
+
+function esconder(id){ document.getElementById(id).style.display='none'; }
+function mostrar(id){ document.getElementById(id).style.display='block'; }
+
+// INIT
+async function init() {
+  try {
+    const { data: { session } } = await sb.auth.getSession();
+
+    if (session) {
+      user = session.user;
+      esconder('loadingOverlay');
+      mostrar('app');
+    } else {
+      esconder('loadingOverlay');
+      mostrar('loginOverlay');
+    }
+  } catch (e) {
+    console.error('Erro init:', e);
+    esconder('loadingOverlay');
+    alert('Erro ao iniciar aplicação');
+  }
+}
+
+// CORREÇÃO 1
+async function changeMonth(delta) {
+  mesAtual += delta;
+  if (mesAtual > 11) { mesAtual = 0; anoAtual++; }
+  if (mesAtual < 0)  { mesAtual = 11; anoAtual--; }
+  console.log('Mês atualizado:', mesAtual, anoAtual);
+}
+
+// CORREÇÃO 2 (ESSENCIAL)
+window.addEventListener('load', init);
+</script>
+
+</body>
+</html>
