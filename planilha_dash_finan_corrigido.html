@@ -1,0 +1,19 @@
+<!-- Arquivo corrigido: apenas correção de 'apync' para 'async' -->
+<!-- Procurei e corrigi o erro crítico que quebrava o app -->
+
+<script>
+// CORREÇÃO APLICADA
+async function changeMonth(delta) {
+  mesAtual += delta;
+  if (mesAtual > 11) { mesAtual = 0; anoAtual++; }
+  if (mesAtual < 0)  { mesAtual = 11; anoAtual--; }
+  atualizarMes();
+  await carregarDados();
+  carregarNotas();
+}
+</script>
+
+<!-- IMPORTANTE:
+Substitua apenas essa função no seu arquivo original.
+Não precisa mexer no resto do código.
+-->
